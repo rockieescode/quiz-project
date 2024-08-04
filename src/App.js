@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import Login from './components/Login';
+import Quiz from './pages/Quiz';
+import Result from './pages/Result';
 
-function App() {
+const App = () => {
+  const [user, setUser] = useState(null);
+  const [quizComplete, setQuizComplete] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+
+  const handleLogin = (username) => {
+    setUser(username);
+  };
+
+  const handleQuizComplete = (correctAnswers, totalQuestions) => {
+    setCorrectAnswers(correctAnswers);
+    setTotalQuestions(totalQuestions);
+    setQuizComplete(true);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        {!user && <Login onLogin={handleLogin} />}
+        {user && !quizComplete && <Quiz onQuizComplete={handleQuizComplete} />}
+        {quizComplete && <Result correctAnswers={correctAnswers} totalQuestions={totalQuestions} />}
+      </div>
   );
-}
+};
 
 export default App;
